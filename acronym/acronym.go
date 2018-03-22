@@ -1,15 +1,27 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package acronym should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package acronym provides the acronym to a string input
 package acronym
 
-// Abbreviate should have a comment documenting it.
+import (
+	"log"
+	"regexp"
+	"strings"
+)
+
+// Abbreviate gives the acronym of the string s
 func Abbreviate(s string) string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return ""
+	var abv string // the abbreviation of s
+
+	// Remove any non letters
+	reg, err := regexp.Compile("[^a-zA-Z]+")
+	if err != nil {
+		log.Fatal(err)
+	}
+	noPunc := reg.ReplaceAllString(s, " ")
+
+	// Loop over each word and add the first letter to abv
+	for _, v := range strings.Fields(noPunc) {
+		abv = abv + strings.ToUpper(string(v[0]))
+	}
+
+	return abv
 }
